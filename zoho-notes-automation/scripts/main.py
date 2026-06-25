@@ -4,10 +4,10 @@ main.py
 The conductor of the whole pipeline. Each time this runs (Mon-Thu, via
 GitHub Actions cron), it:
 
-  1. Reads links.json to find your 40 recording links
-  2. Reads progress.json to know which day-pair to do next (1&2, then 3&4, ...)
+  1. Reads links.json to find your recording links
+  2. Reads progress.json to know which day-pair to do next (3&4, then 5&6, ...)
   3. Downloads both videos, transcribes both, generates notes for both
-  4. Combines both into one Word doc
+  4. Combines both into one Word doc, named "Prince Pokharna (Day X and Day Y).docx"
   5. Hands the .docx off to the WhatsApp sender
   6. Updates progress.json so tomorrow picks up the next pair automatically
   7. Commits progress.json back to the repo (so state persists between runs)
@@ -115,7 +115,7 @@ def main():
 
     # Build combined Word doc
     from build_docx import build_combined_docx
-    output_docx = OUTPUT_DIR / f"Notes_Day{day1_number}_Day{day2_number}.docx"
+    output_docx = OUTPUT_DIR / f"Prince Pokharna (Day {day1_number} and Day {day2_number}).docx"
     build_combined_docx(
         day1_notes_path, day2_notes_path, str(output_docx),
         day1_label=f"Day {day1_number}", day2_label=f"Day {day2_number}",

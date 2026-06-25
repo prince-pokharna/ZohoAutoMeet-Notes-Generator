@@ -23,8 +23,9 @@ const GROUP_ID = "PASTE_YOUR_GROUP_ID_HERE@g.us";
 const OUTPUT_PATH_FILE = path.join(__dirname, "..", "latest_output_path.txt");
 
 function getCaption(docxFileName) {
-  // Pulls "Day 5" and "Day 6" style numbers out of the filename for a nice caption
-  const match = docxFileName.match(/Day(\d+)_Day(\d+)/);
+  // Pulls "Day 5" and "Day 6" style numbers out of filenames like
+  // "Prince Pokharna (Day 5 and Day 6).docx" for a nice caption
+  const match = docxFileName.match(/Day (\d+) and Day (\d+)/);
   if (match) {
     return `📘 Notes for Day ${match[1]} & Day ${match[2]} are ready! Have a great revision 🙌`;
   }

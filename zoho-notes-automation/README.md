@@ -93,11 +93,15 @@ be generated first.)
 
 ---
 
-## PART 4 — Add your 40 recording links (5 minutes)
+## PART 4 — Add your 44 recording links (5 minutes)
 
 1. Open `links.json` in this project
-2. Replace the example links with your real 40 Zoho links, **in order**
-   (Day 1 first, Day 2 second, ... Day 40 last)
+2. Replace the example links with **all 44** real Zoho links, **in order**
+   (Day 1 first, Day 2 second, ... Day 44 last) — yes, include Day 1 and
+   Day 2 too, even though you already sent those manually. `progress.json`
+   is already set to skip them and start the automation from Day 3 & Day 4
+   — you just need the full, correctly-ordered list of 44 so the day
+   numbering lines up.
 3. Save the file
 4. Push the change to GitHub:
 
@@ -239,6 +243,16 @@ desired IST time to get the UTC cron time.
   same pair next scheduled run (or you can re-trigger manually from the
   Actions tab).
 
+**Output filename format:** each run produces
+`Prince Pokharna (Day X and Day Y).docx` — e.g. `Prince Pokharna (Day 3 and
+Day 4).docx`, then `Prince Pokharna (Day 5 and Day 6).docx`, and so on. This
+is generated automatically from the day numbers; you never need to type it.
+
+**Already-sent days:** `progress.json` ships set to `"next_day_index": 2`,
+which means the automation starts from **Day 3 & Day 4** — Day 1 & Day 2 are
+treated as already done, since you sent those manually before setting this
+up.
+
 ---
 
 ## Troubleshooting
@@ -269,7 +283,8 @@ GitHub's free runners have enough RAM for this comfortably.
 
 **Want to reprocess a day you already did**
 Edit `progress.json` and set `next_day_index` back to the number you want
-(0 = Day 1&2, 2 = Day 3&4, 4 = Day 5&6, etc.), then commit and push, or just
+(0 = Day 1&2, 2 = Day 3&4, 4 = Day 5&6, etc. — the current default is 2,
+since Day 1 & 2 were already sent manually), then commit and push, or just
 trigger the workflow manually.
 
 ---
@@ -278,7 +293,7 @@ trigger the workflow manually.
 
 ```
 notes-automation/
-├── links.json                  ← YOU edit this: your 40 recording links
+├── links.json                  ← YOU edit this: your 44 recording links
 ├── progress.json               ← auto-managed: tracks which day is next
 ├── requirements.txt            ← Python dependencies
 ├── .github/workflows/
