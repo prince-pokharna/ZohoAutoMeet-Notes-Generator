@@ -257,6 +257,27 @@ up.
 
 ## Troubleshooting
 
+**"ProtocolError: Runtime.callFunctionOn timed out" when running
+`node list_groups.js` or `node first_time_login.js`**
+This is a well-known, recurring issue in the `whatsapp-web.js` library
+itself (not something wrong with your setup) — it happens when WhatsApp
+updates their web client faster than the library catches up, especially on
+Windows. The fix already built into this project: `client_config.js` pins
+WhatsApp Web to a known-stable version instead of letting it load whatever
+the absolute latest is, and extends the connection timeout. If you pulled
+this project before that fix was added, make sure you have the latest
+`whatsapp-bot/client_config.js` and that all three `.js` files import
+`sharedClientOptions` from it. If it still fails:
+1. Just try running the command again — it sometimes succeeds on a second
+   attempt once WhatsApp Web's local cache has settled.
+2. Delete the `whatsapp-bot/wwebjs_auth` folder and `whatsapp-bot/.wwebjs_cache`
+   folder (if present) and re-run `node first_time_login.js` from scratch —
+   a corrupted cached session is a common secondary cause.
+3. If it persists, the pinned version number in `client_config.js`
+   (`WA_VERSION`) may need updating — check
+   https://github.com/wppconnect-team/wa-version for a newer known-good
+   version and swap it in.
+
 **"Could not download recording" / video capture fails**
 Zoho occasionally changes how their player page loads the video. Open the
 failing link yourself in a normal browser, right-click the video, see if
@@ -305,6 +326,7 @@ notes-automation/
 │   ├── generate_notes.py       ← text → structured notes (Groq AI)
 │   └── build_docx.py           ← notes → formatted Word document
 └── whatsapp-bot/
+    ├── client_config.js         ← shared settings (pinned WA version, timeouts)
     ├── first_time_login.js     ← YOU run once: scan QR to log in
     ├── list_groups.js          ← YOU run once: find your group's ID
     └── send_to_whatsapp.js     ← auto-runs: sends the docx to your group

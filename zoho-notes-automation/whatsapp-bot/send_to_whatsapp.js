@@ -14,6 +14,7 @@
 const fs = require("fs");
 const path = require("path");
 const { Client, LocalAuth, MessageMedia } = require("whatsapp-web.js");
+const { sharedClientOptions } = require("./client_config");
 
 // ====== EDIT THIS ======
 // Paste the group ID you got from list_groups.js (looks like "1234567890-1234567890@g.us")
@@ -47,11 +48,8 @@ async function main() {
   console.log(`Preparing to send: ${docxPath}`);
 
   const client = new Client({
+    ...sharedClientOptions,
     authStrategy: new LocalAuth({ dataPath: path.join(__dirname, "wwebjs_auth") }),
-    puppeteer: {
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    },
   });
 
   client.on("ready", async () => {
