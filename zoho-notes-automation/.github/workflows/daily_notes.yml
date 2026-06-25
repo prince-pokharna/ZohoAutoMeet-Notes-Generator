@@ -1,0 +1,69 @@
+name: Daily Notes Automation
+
+# Runs Monday-Thursday only (cron is in UTC).
+# 3:30 AM UTC = 9:00 AM IST. Change the hour below to whatever time you want
+# notes delivered. Friday(5)/Saturday(6)/Sunday(0) are intentionally excluded
+# from the day list below (cron days: 1=Mon ... 4=Thu).
+on:
+  schedule:
+    - cron: "30 3 * * 1-4"
+  workflow_dispatch: {}   # lets you also trigger it manually from the Actions tab
+
+jobs:
+  generate-and-send-notes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Need write access so the workflow can commit progress.json back
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Install Node dependencies
+        working-directory: ./whatsapp-bot
+        run: npm install
+
+      - name: Restore WhatsApp session from secret
+        working-directory: ./whatsapp-bot
+        run: |
+          echo "${{ secrets.WHATSAPP_SESSION_B64 }}" | base64 -d > session.zip
+          unzip -o session.zip -d .
+          rm session.zip
+
+      - name: Run the note-generation pipeline
+        working-directory: ./scripts
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python main.py
+
+      - name: Send notes to WhatsApp group
+        working-directory: ./whatsapp-bot
+        run: node send_to_whatsapp.js
+
+      - name: Commit updated progress.json
+        run: |
+          git config user.name "notes-automation-bot"
+          git config user.email "actions@github.com"
+          git add progress.json
+          git diff --staged --quiet || git commit -m "Update progress: notes sent [skip ci]"
+          git push

@@ -1,0 +1,14 @@
+{
+  "name": "whatsapp-notes-sender",
+  "version": "1.0.0",
+  "description": "Stays logged into WhatsApp Web and sends the daily notes file to your group automatically.",
+  "main": "send_to_whatsapp.js",
+  "scripts": {
+    "start": "node send_to_whatsapp.js",
+    "login": "node first_time_login.js"
+  },
+  "dependencies": {
+    "whatsapp-web.js": "^1.26.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

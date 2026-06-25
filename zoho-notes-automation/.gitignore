@@ -1,0 +1,20 @@
+# WhatsApp login session — NEVER commit this, it's your live login
+whatsapp-bot/wwebjs_auth/
+whatsapp-bot/session.zip
+whatsapp-bot/session_b64.txt
+
+# Generated working files (recreated fresh each run)
+work/
+output/
+latest_output_path.txt
+
+# Node
+whatsapp-bot/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS junk
+.DS_Store
+Thumbs.db

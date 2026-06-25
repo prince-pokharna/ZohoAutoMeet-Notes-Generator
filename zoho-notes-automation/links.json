@@ -1,0 +1,9 @@
+{
+  "_instructions": "Paste your Zoho recording links below IN ORDER (Day 1 first, Day 2 second, etc.). Keep the quotes and commas. Delete this _instructions line if you want, it's ignored by the code.",
+  "links": [
+    "https://meeting.zoho.eu/meeting/public/videoprv?recordingId=PASTE_DAY1_LINK_HERE",
+    "https://meeting.zoho.eu/meeting/public/videoprv?recordingId=PASTE_DAY2_LINK_HERE",
+    "https://meeting.zoho.eu/meeting/public/videoprv?recordingId=PASTE_DAY3_LINK_HERE",
+    "https://meeting.zoho.eu/meeting/public/videoprv?recordingId=PASTE_DAY4_LINK_HERE"
+  ]
+}
